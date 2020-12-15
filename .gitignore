@@ -1,3 +1,5 @@
 .idea
 *.pyc
 timecard/config.py
+migrations
+timecard/timecard.db
