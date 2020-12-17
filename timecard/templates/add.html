@@ -8,22 +8,7 @@
 <form action="" method="post">
     {{ form.hidden_tag() }}
     {{ form_field(form.name) }}
-    {{ form_field(form.project_number) }}
-    {{ form_field(form.date_created, placeholder="yyyy-mm-dd") }}
-    {{ form_field(form.deadline, placeholder="yyyy-mm-dd") }}
-    {{ form_field(form.description) }}
 
-    <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <p>Add new drawing to project</p>
-
-        {% for nested in form.drawings_list %}
-        {{ nested }}
-        {% endfor %}
-        {{ form.submit(class="btn btn-dark") }}
-    </form>
-
-    {{ form_field(form.files) }}
     {{ form.submit(class="btn btn-dark") }}
 </form>
 

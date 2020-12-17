@@ -1,0 +1,26 @@
+{% extends "_base.html" %}
+{% from 'macros.html' import form_field %}
+
+{% block title %} Add Project {% endblock %}
+
+{% block content %}
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{ form_field(form.name) }}
+    {{ form_field(form.project_number) }}
+    {{ form_field(form.date_created, placeholder="yyyy-mm-dd") }}
+    {{ form_field(form.deadline, placeholder="yyyy-mm-dd") }}
+    {{ form_field(form.description) }}
+
+        <p>Add first drawing to project</p>
+
+        {% for nested in form.drawings_list %}
+        {{ nested }}
+        {% endfor %}
+
+    {{ form_field(form.files) }}
+    {{ form.submit(class="btn btn-dark") }}
+</form>
+
+{% endblock %}
