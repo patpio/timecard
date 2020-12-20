@@ -20,3 +20,7 @@ class ProjectForm(FlaskForm):
     # drawings_list = FieldList(FormField(DrawingForm), min_entries=1)
     # files = MultipleFileField('Add files')
     submit = SubmitField('Add')
+
+
+class DeleteProjectForm(FlaskForm):
+    submit = SubmitField('Delete')

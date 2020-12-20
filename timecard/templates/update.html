@@ -1,0 +1,15 @@
+{% extends "_base.html" %}
+{% from 'macros.html' import form_field %}
+
+{% block title %} Update {% endblock %}
+
+{% block content %}
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{ form_field(form.name) }}
+
+    {{ form.submit(class="btn btn-dark") }}
+</form>
+
+{% endblock %}

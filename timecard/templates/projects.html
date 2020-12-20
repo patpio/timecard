@@ -4,10 +4,20 @@
 
 {% block content %}
 
-<ol>
-    {% for project in projects %}
-        <li>{{ project.name }}</li>
-    {% endfor %}
-</ol>
+<ul>
+    {% if projects %}
+
+        {% for project in projects %}
+            <li>
+                <a href="{{ url_for('projects.project', name=project.name) }}">{{ project.name }}</a>
+            </li>
+        {% endfor %}
+
+    {% else %}
+
+        <p>No project added yet.</p>
+
+    {% endif %}
+</ul>
 
 {% endblock %}

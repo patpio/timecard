@@ -1,3 +1,5 @@
+from sqlalchemy import desc
+
 from timecard import db
 
 
@@ -11,6 +13,10 @@ class Project(db.Model):
     # drawings_list = db.relationship(lambda: Drawing)
     # files =
 
+    @staticmethod
+    def latest(num):
+        return Project.query.order_by(desc(Project.id)).limit(num)
+
 
 # class Drawing(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
@@ -19,5 +25,3 @@ class Project(db.Model):
 #     name = db.Column(db.String)
 #     description = db.Column(db.String)
 #     status = db.Column(db.String)
-
-

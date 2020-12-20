@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, url_for
+from flask import Blueprint, render_template, url_for, flash
+from sqlalchemy import desc
 from werkzeug.utils import redirect
 
 from timecard import db
 from ..models import Project
-from ..forms import ProjectForm
+from ..forms import ProjectForm, DeleteProjectForm
 
 bp_project = Blueprint('projects', __name__, url_prefix='/projects')
 
@@ -12,21 +13,48 @@ bp_project = Blueprint('projects', __name__, url_prefix='/projects')
 def add():
     form = ProjectForm()
     if form.validate_on_submit():
-        project = Project(name=form.name.data)
-        db.session.add(project)
+        my_project = Project(name=form.name.data)
+        db.session.add(my_project)
         db.session.commit()
+        flash(f'Project {my_project.name} has been successfully added', 'success')
         return redirect(url_for('main.home'))
 
     return render_template('add.html', form=form)
 
 
-# @bp_project.route('/projects')
-# def projects():
-#     # projects = Project.query.all()
-#     return render_template('projects.html', projects=projects)
-#
-#
-# @bp_project.route('/<name>')
-# def project(name):
-#     # project = Project.query.filter_by(name=name).first_or_404()
-#     return render_template('project.html', project=project)
+@bp_project.route('/projects')
+def projects():
+    my_projects = Project.query.order_by(desc(Project.id))
+    return render_template('projects.html', projects=my_projects)
+
+
+@bp_project.route('/<name>')
+def project(name):
+    my_project = Project.query.filter_by(name=name).first_or_404()
+    delete_form = DeleteProjectForm()
+    return render_template('project.html', project=my_project, delete_form=delete_form)
+
+
+@bp_project.route('/update/<int:project_id>', methods=['GET', 'POST'])
+def update(project_id):
+    my_project = Project.query.filter_by(id=project_id).first_or_404()
+    form = ProjectForm()
+
+    if form.validate_on_submit():
+        my_project.name = form.name.data
+        db.session.commit()
+        flash(f'Project {my_project.name} has been successfully updated', 'success')
+        return redirect(url_for('projects.project', name=my_project.name))
+
+    form.name.data = my_project.name
+
+    return render_template('update.html', form=form)
+
+
+@bp_project.route('/delete/<int:project_id>', methods=['POST'])
+def delete(project_id):
+    my_project = Project.query.filter_by(id=project_id)
+    my_project.delete()
+    db.session.commit()
+    flash('Project has been successfully deleted', 'success')
+    return redirect(url_for('main.home'))
