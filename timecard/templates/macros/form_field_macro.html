@@ -1,0 +1,19 @@
+{% macro render_field(field) %}
+<div class="form-group">
+    {% with classes = 'form-control is-invalid' if field.errors else 'form-control' %}
+        {% if field.type != 'SubmitField' and field.name != 'csrf_token' %}
+        {{ field.label(class="form-label") }}
+        {% endif %}
+
+        {{ field (class=classes, **kwargs) }}
+
+        {% if field.errors %}
+        <div class="invalid-feedback">
+            {% for error in field.errors %}
+            {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+</div>
+{% endmacro %}

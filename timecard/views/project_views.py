@@ -4,14 +4,14 @@ from werkzeug.utils import redirect
 
 from timecard import db
 from ..models import Project
-from ..forms import ProjectForm, DeleteProjectForm
+from ..forms import NewProjectForm, UpdateProjectForm, DeleteProjectForm
 
 bp_project = Blueprint('projects', __name__, url_prefix='/projects')
 
 
 @bp_project.route('/add', methods=['GET', 'POST'])
 def add():
-    form = ProjectForm()
+    form = NewProjectForm()
     if form.validate_on_submit():
         my_project = Project(name=form.name.data)
         db.session.add(my_project)
@@ -38,7 +38,7 @@ def project(name):
 @bp_project.route('/update/<int:project_id>', methods=['GET', 'POST'])
 def update(project_id):
     my_project = Project.query.filter_by(id=project_id).first_or_404()
-    form = ProjectForm()
+    form = UpdateProjectForm()
 
     if form.validate_on_submit():
         my_project.name = form.name.data

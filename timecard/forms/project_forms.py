@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, TextAreaField, IntegerField, MultipleFileField, SubmitField, FormField, \
-    FieldList, SelectField, Form
+    FieldList, SelectField, Form, validators
 from wtforms.validators import DataRequired
 
 
@@ -13,13 +13,19 @@ from wtforms.validators import DataRequired
 
 class ProjectForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    # project_number = IntegerField('Project number')
-    # date_created = DateField('Creation date')
-    # deadline = DateField('Deadline')
-    # description = TextAreaField('Description')
+    project_number = IntegerField('Project number')
+    deadline = DateField('Deadline', validators=[validators.Optional()])
+    description = TextAreaField('Description')
     # drawings_list = FieldList(FormField(DrawingForm), min_entries=1)
     # files = MultipleFileField('Add files')
+
+
+class NewProjectForm(ProjectForm):
     submit = SubmitField('Add')
+
+
+class UpdateProjectForm(ProjectForm):
+    submit = SubmitField('Update')
 
 
 class DeleteProjectForm(FlaskForm):

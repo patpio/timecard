@@ -1,1 +1,1 @@
-from timecard.forms.project_forms import ProjectForm, DeleteProjectForm
+from timecard.forms.project_forms import ProjectForm, NewProjectForm, UpdateProjectForm, DeleteProjectForm

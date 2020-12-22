@@ -1,3 +1,5 @@
+from datetime import date
+
 from sqlalchemy import desc
 
 from timecard import db
@@ -6,10 +8,10 @@ from timecard import db
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    # project_number = db.Column(db.Integer)
-    # date_created = db.Column(db.Date)
-    # deadline = db.Column(db.Date)
-    # description = db.Column(db.String)
+    project_number = db.Column(db.Integer)
+    date_created = db.Column(db.Date, default=date.today())
+    deadline = db.Column(db.Date)
+    description = db.Column(db.String)
     # drawings_list = db.relationship(lambda: Drawing)
     # files =
 
