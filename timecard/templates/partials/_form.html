@@ -2,10 +2,12 @@
 
 <form action="{{ action }}" method="{{ method if method else 'POST' }}" novalidate {% if enctype %} enctype="multipart/form-data" {% endif %}>
     {% for f in form %}
-        {% if f.type != 'SubmitField' %}
-        {{ render_field(f) }}
-        {% else %}
+        {% if f.type == 'DateField' %}
+        {{ render_field(f, placeholder="yyyy-mm-dd") }}
+        {% elif f.type == 'SubmitField' %}
         {{ render_field(f, class='btn btn-dark') }}
+        {% else %}
+        {{ render_field(f) }}
         {% endif %}
     {% endfor %}
 </form>

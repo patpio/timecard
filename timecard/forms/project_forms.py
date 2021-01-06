@@ -13,7 +13,7 @@ from wtforms.validators import DataRequired
 
 class ProjectForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    project_number = IntegerField('Project number')
+    project_number = IntegerField('Project number', validators=[validators.Optional()])
     deadline = DateField('Deadline', validators=[validators.Optional()])
     description = TextAreaField('Description')
     # drawings_list = FieldList(FormField(DrawingForm), min_entries=1)

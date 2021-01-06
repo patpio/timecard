@@ -4,12 +4,15 @@
 
 {% block content %}
 
-<h1>{{ project.name }}</h1>
+<p class="h1">Name: {{ project.name }}</p>
+<p class="h2">Project number: {{ project.project_number }}</p>
+<p class="h3">Date created: {{ project.date_created }}</p>
+<p class="h3">Deadline: {{ project.deadline }}</p>
+<p class="h4">Description: {{ project.description }}</p>
 
+<a class="btn btn-dark" href="{{ url_for('project.update', project_id=project.id) }}" role="button">Update</a>
 
-<a class="btn btn-dark" href="{{ url_for('projects.update', project_id=project.id) }}" role="button">Update</a>
-
-<form action="{{ url_for('projects.delete', project_id=project.id) }}" method="post">
+<form action="{{ url_for('project.delete', project_id=project.id) }}" method="post">
     {{ delete_form.submit(class="btn btn-dark") }}
 </form>
 {% endblock %}

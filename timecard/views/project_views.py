@@ -6,14 +6,15 @@ from timecard import db
 from ..models import Project
 from ..forms import NewProjectForm, UpdateProjectForm, DeleteProjectForm
 
-bp_project = Blueprint('projects', __name__, url_prefix='/projects')
+bp_project = Blueprint('project', __name__, url_prefix='/projects')
 
 
 @bp_project.route('/add', methods=['GET', 'POST'])
 def add():
     form = NewProjectForm()
     if form.validate_on_submit():
-        my_project = Project(name=form.name.data)
+        my_project = Project(name=form.name.data, project_number=form.project_number.data, deadline=form.deadline.data,
+                             description=form.description.data)
         db.session.add(my_project)
         db.session.commit()
         flash(f'Project {my_project.name} has been successfully added', 'success')
@@ -38,15 +39,14 @@ def project(name):
 @bp_project.route('/update/<int:project_id>', methods=['GET', 'POST'])
 def update(project_id):
     my_project = Project.query.filter_by(id=project_id).first_or_404()
-    form = UpdateProjectForm()
+    form = UpdateProjectForm(obj=my_project)
 
     if form.validate_on_submit():
-        my_project.name = form.name.data
+        form.populate_obj(my_project)
         db.session.commit()
-        flash(f'Project {my_project.name} has been successfully updated', 'success')
-        return redirect(url_for('projects.project', name=my_project.name))
 
-    form.name.data = my_project.name
+        flash(f'Project {my_project.name} has been successfully updated', 'success')
+        return redirect(url_for('project.project', name=my_project.name))
 
     return render_template('update.html', form=form)
 
