@@ -6,6 +6,8 @@
         {{ render_field(f, placeholder="yyyy-mm-dd") }}
         {% elif f.type == 'SubmitField' %}
         {{ render_field(f, class='btn btn-dark') }}
+        {% elif f.widget.input_type == 'checkbox' %}
+        {{ render_field(f, class='') }}
         {% else %}
         {{ render_field(f) }}
         {% endif %}

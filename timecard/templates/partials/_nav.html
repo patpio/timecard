@@ -8,6 +8,12 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('auth.admin') }}">Add Admin</a>
+        </li>
+        {% endif %}
+        {% if current_user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
         </li>
@@ -28,13 +34,20 @@
           <a class="nav-link" href="{{ url_for('project.add') }}">Add Project</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Add User</a>
+          <a class="nav-link" href="{{ url_for('user.user') }}">User Profile</a>
         </li>
+        {% if current_user == admin %}
         <li class="nav-item">
-          <a class="nav-link" href="#">Logout</a>
+          <a class="nav-link" href="{{ url_for('auth.signup') }}">Add User</a>
         </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+        </li>
+        {% endif %}
+
       </ul>
-      <form class="d-flex">
+      <form class="d-flex" action="{{ url_for('project.search') }}" method="post">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>

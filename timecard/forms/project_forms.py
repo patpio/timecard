@@ -30,3 +30,8 @@ class UpdateProjectForm(ProjectForm):
 
 class DeleteProjectForm(FlaskForm):
     submit = SubmitField('Delete')
+
+
+class SearchProjectForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Search')

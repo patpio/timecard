@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from flask_login import login_required
 
 from ..models import User, Project
 from timecard import login_manager
@@ -12,6 +13,7 @@ def load_user(user_id):
 
 
 @bp_main.route('/')
+@login_required
 def home():
     return render_template('index.html')
 
@@ -20,3 +22,8 @@ def home():
 def latest_5():
     latest_projects = Project.latest(5)
     return dict(latest_projects=latest_projects)
+
+
+@bp_main.app_context_processor
+def admin():
+    return dict(admin=User.query.filter_by(username='admin').first())
