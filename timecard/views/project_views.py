@@ -5,7 +5,7 @@ from werkzeug.utils import redirect
 
 from timecard import db
 from ..models import Project
-from ..forms import NewProjectForm, UpdateProjectForm, DeleteProjectForm, SearchProjectForm
+from ..forms import NewProjectForm, UpdateProjectForm, DeleteProjectForm
 
 bp_project = Blueprint('project', __name__, url_prefix='/projects')
 
@@ -66,9 +66,10 @@ def delete(project_id):
     return redirect(url_for('main.home'))
 
 
-@bp_project.route('/search', methods=['POST'])
+@bp_project.route('/search')
 @login_required
 def search():
-    form = SearchProjectForm()
-    project = Project.query.filter_by(name=form.name.data).first_or_404()
-    return redirect(url_for('project.project', name=project.name))
+    if Project.query.filter_by(name=request.args.get('search')).first():
+        return redirect(url_for('project.project', name=request.args.get('search')))
+    flash('Project not found', 'danger')
+    return redirect(request.referrer)

@@ -27,3 +27,8 @@ def latest_5():
 @bp_main.app_context_processor
 def admin():
     return dict(admin=User.query.filter_by(username='admin').first())
+
+
+@bp_main.app_errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
