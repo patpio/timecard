@@ -1,14 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField, TextAreaField, IntegerField, MultipleFileField, SubmitField, FormField, \
-    FieldList, SelectField, Form, validators
+from wtforms import StringField, DateField, TextAreaField, IntegerField, SubmitField, FormField, \
+    FieldList, validators
 from wtforms.validators import DataRequired
 
-
-# class DrawingForm(Form):
-#     number = IntegerField('Drawing number')
-#     name = StringField('Drawing name')
-#     description = TextAreaField('Drawing description')
-#     status = SelectField('Drawing status', choices=['Need to draw', 'Working on', 'Done'])
+from .drawing_forms import DrawingForm
 
 
 class ProjectForm(FlaskForm):
@@ -16,7 +11,6 @@ class ProjectForm(FlaskForm):
     project_number = IntegerField('Project number', validators=[validators.Optional()])
     deadline = DateField('Deadline', validators=[validators.Optional()])
     description = TextAreaField('Description')
-    # drawings_list = FieldList(FormField(DrawingForm), min_entries=1)
     # files = MultipleFileField('Add files')
 
 
@@ -25,6 +19,7 @@ class NewProjectForm(ProjectForm):
 
 
 class UpdateProjectForm(ProjectForm):
+    drawings = FieldList(FormField(DrawingForm), min_entries=1)
     submit = SubmitField('Update')
 
 

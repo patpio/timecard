@@ -9,6 +9,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), unique=True)
     email = db.Column(db.String(80), unique=True)
     password_hash = db.Column(db.String)
+    projects = db.relationship('Project', backref='user', lazy='dynamic')
 
     @property
     def password(self):
