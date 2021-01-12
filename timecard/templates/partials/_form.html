@@ -8,6 +8,8 @@
         {{ render_field(f, class='btn btn-dark') }}
         {% elif f.widget.input_type == 'checkbox' %}
         {{ render_field(f, class='') }}
+        {% elif f.type == 'FieldList' %}
+        {% include 'partials/_table.html' %}
         {% else %}
         {{ render_field(f) }}
         {% endif %}

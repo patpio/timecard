@@ -1,0 +1,26 @@
+{% if project_form.drawings[0] %}
+<table class="table">
+  <thead>
+    <tr>
+        {% for field in project_form.drawings[0] %}
+            {% if field.widget.input_type != 'hidden' %}
+                <th scope="col">{{ field.label }}</th>
+            {% endif %}
+        {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+  {% for drawing in project_form.drawings %}
+    <tr>
+        <div class="row">
+            {% for field in drawing %}
+            <div class="col-3">
+                <td>{{ field(class="form-control") }}</td>
+            </div>
+            {% endfor %}
+        </div>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}

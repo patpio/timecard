@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, url_for, flash, request
-from flask_login import login_required
+from flask_login import login_required, current_user
 from sqlalchemy import desc
 from werkzeug.utils import redirect
 
 from timecard import db
-from ..models import Project
-from ..forms import NewProjectForm, UpdateProjectForm, DeleteProjectForm
+from ..models import Project, Drawing
+from ..forms import NewProjectForm, UpdateProjectForm, DeleteProjectForm, AddDrawingForm
 
 bp_project = Blueprint('project', __name__, url_prefix='/projects')
 
@@ -15,11 +15,11 @@ bp_project = Blueprint('project', __name__, url_prefix='/projects')
 def add():
     form = NewProjectForm()
     if form.validate_on_submit():
-        my_project = Project()
+        my_project = Project(user=current_user)
         form.populate_obj(my_project)
         db.session.add(my_project)
         db.session.commit()
-        flash(f'Project {my_project.name} has been successfully added', 'success')
+        flash(f'Project {my_project.name} has been successfully added.', 'success')
         return redirect(url_for('project.project', name=my_project.name))
 
     return render_template('add.html', form=form)
@@ -44,16 +44,27 @@ def project(name):
 @login_required
 def update(project_id):
     my_project = Project.query.filter_by(id=project_id).first_or_404()
-    form = UpdateProjectForm(obj=my_project)
+    project_form = UpdateProjectForm(obj=my_project)
 
-    if form.validate_on_submit():
-        form.populate_obj(my_project)
+    if project_form.validate_on_submit():
+        project_form.populate_obj(my_project)
         db.session.commit()
 
-        flash(f'Project {my_project.name} has been successfully updated', 'success')
+        flash(f'Project {my_project.name} has been successfully updated.', 'success')
         return redirect(url_for('project.project', name=my_project.name))
 
-    return render_template('update.html', form=form)
+    drawing_form = AddDrawingForm()
+
+    if drawing_form.validate_on_submit():
+        drawing = Drawing(project=my_project)
+        drawing_form.populate_obj(drawing)
+        db.session.add(drawing)
+        db.session.commit()
+
+        flash(f'Drawing {drawing.name} has been successfully added.', 'success')
+        return redirect(request.referrer)
+
+    return render_template('update.html', project_form=project_form, drawing_form=drawing_form)
 
 
 @bp_project.route('/delete/<int:project_id>', methods=['POST'])

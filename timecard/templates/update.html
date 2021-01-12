@@ -1,11 +1,26 @@
+{% from 'macros/form_field_macro.html' import render_field %}
+
 {% extends "partials/_base.html" %}
 
 {% block title %} Update {% endblock %}
 
 {% block content %}
 
-    {% with enctype = True %}
-        {% include 'partials/_form.html' %}
-    {% endwith %}
+<div class="row">
+    <div class="col-9">
+        {% with  %}
+        {% set enctype = True %}
+        {% set form = project_form %}
+            {% include 'partials/_form.html' %}
+        {% endwith %}
+    </div>
+    <div class="col-3">
+        {% with  %}
+        {% set enctype = True %}
+        {% set form = drawing_form %}
+            {% include 'partials/_form.html' %}
+        {% endwith %}
+    </div>
+</div>
 
 {% endblock %}

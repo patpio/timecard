@@ -19,7 +19,7 @@ class NewProjectForm(ProjectForm):
 
 
 class UpdateProjectForm(ProjectForm):
-    drawings = FieldList(FormField(DrawingForm), min_entries=1)
+    drawings = FieldList(FormField(DrawingForm))
     submit = SubmitField('Update')
 
 
